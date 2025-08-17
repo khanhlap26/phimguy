@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> phimchillguy </title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1308975680862282"
+     crossorigin="anonymous"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      margin: 0;
+      min-height: 100vh;
+    }
+    header {
+      background: #0078D7;
+      color: #fff;
+      padding: 24px 0;
+      text-align: center;
+      font-size: 2.3rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 12px rgba(44,62,80,0.12);
+      border-radius: 0 0 18px 18px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 36px auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(44,62,80,0.16);
+      padding: 32px;
+    }
+    .search-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 32px;
+      justify-content: center;
+    }
+    .search-bar input {
+      padding: 14px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: 1px solid #b3c6e0;
+      width: 340px;
+      box-shadow: 0 2px 8px #0078d722;
+    }
+    .search-bar button {
+      padding: 14px 22px;
+      font-size: 1.1rem;
+      background: linear-gradient(90deg, #0078D7 60%, #74ebd5 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px #0078d722;
+    }
+    .search-bar button:hover {
+      background: linear-gradient(90deg, #005a9e 60%, #74ebd5 100%);
+    }
+    .movies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 28px;
+    }
+    .movie-card {
+      background: #f7fafd;
+      border-radius: 14px;
+      box-shadow: 0 2px 12px rgba(44,62,80,0.10);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border: 2px solid #eaf6ff;
+    }
+    .movie-card:hover {
+      transform: translateY(-7px) scale(1.04);
+      box-shadow: 0 8px 32px rgba(44,62,80,0.18);
+      border: 2px solid #0078D7;
+    }
+    .movie-thumb {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      background: #eaf6ff;
+      border-bottom: 2px solid #eaf6ff;
+    }
+    .movie-info {
+      padding: 16px 12px 12px 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .movie-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #0078D7;
+      margin-bottom: 8px;
+      min-height: 44px;
+    }
+    .movie-meta {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 6px;
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 36px 0 0 0;
+    }
+    .pagination button {
+      padding: 10px 18px;
+      font-size: 1.1rem;
+      background: #eaf6ff;
+      color: #0078D7;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .pagination button.active, .pagination button:hover {
+      background: #0078D7;
+      color: #fff;
+    }
+    .loading {
+      text-align: center;
+      font-size: 1.3rem;
+      color: #0078D7;
+      margin: 36px 0;
+    }
+    @media (max-width: 700px) {
+      .container { padding: 10px; }
+      .search-bar input { width: 98vw; }
+      .movies-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <header style="padding:0;">
+    <img src="https://cdn-media.sforum.vn/storage/app/media/anh-anime-buon-27.jpg" alt="phimchillguy logo" style="height:80px;display:block;margin:0 auto;padding:24px 0 0 0;">
+    <div style="text-align:center;font-size:2rem;font-weight:bold;color:#fff;padding-bottom:18px;">Phim mới cập nhật</div>
+  </header>
+  <div class="container">
+    <div class="search-bar">
+      <button onclick="goHome()" style="background:#eaf6ff;color:#0078D7;">🏠 Trang chủ</button>
+      <input type="text" id="searchInput" placeholder="Tìm kiếm phim...">
+      <button onclick="searchMovies()">Tìm kiếm</button>
+    </div>
+    <!-- Quảng cáo banner dưới header -->
+    <div style="width:100%;text-align:center;margin:24px 0;">
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-1308975680862282"
+           data-ad-slot="1234567890"
+           data-ad-format="auto"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+    <div id="movies" class="movies-grid"></div>
+    <div id="pagination" class="pagination"></div>
+    <div id="loading" class="loading" style="display:none;">Đang tải phim...</div>
+  </div>
+  <script>
+    let currentPage = 1;
+    let totalPages = 1;
+    let currentKeyword = "";
+
+    function getImage(url) {
+      return `https://phimapi.com/image.php?url=${encodeURIComponent(url)}`;
+    }
+
+    function renderMovies(movies) {
+      const moviesEl = document.getElementById('movies');
+      moviesEl.innerHTML = movies.map(movie => `
+        <div class="movie-card" onclick="showMovieDetail('${movie.slug}')">
+          <img class="movie-thumb" src="${getImage(movie.poster_url)}" alt="${movie.name}">
+          <div class="movie-info">
+            <div class="movie-title">${movie.name}</div>
+            <div class="movie-meta">${movie.origin_name} • ${movie.year}</div>
+            <div class="movie-meta">${movie.category.map(c => c.name).join(', ')}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderPagination() {
+      const paginationEl = document.getElementById('pagination');
+      let html = '';
+      let start = Math.max(1, currentPage - 2);
+      let end = Math.min(totalPages, currentPage + 2);
+      if (start > 1) html += `<button onclick="goToPage(1)">1</button>`;
+      if (start > 2) html += `<span>...</span>`;
+      for (let i = start; i <= end; i++) {
+        html += `<button onclick="goToPage(${i})" ${i === currentPage ? 'class="active"' : ''}>${i}</button>`;
+      }
+      if (end < totalPages - 1) html += `<span>...</span>`;
+      if (end < totalPages) html += `<button onclick="goToPage(${totalPages})">${totalPages}</button>`;
+      paginationEl.innerHTML = html;
+    }
+
+    function showLoading(show) {
+      document.getElementById('loading').style.display = show ? 'block' : 'none';
+    }
+
+    function fetchMovies(page = 1) {
+      showLoading(true);
+      currentPage = page;
+      let url;
+      if (currentKeyword) {
+        url = `https://phimapi.com/v1/api/tim-kiem?keyword=${encodeURIComponent(currentKeyword)}&page=${page}&sort_field=modified.time&sort_type=desc&limit=20`;
+      } else {
+        url = `https://phimapi.com/danh-sach/phim-moi-cap-nhat-v3?page=${page}`;
+      }
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          showLoading(false);
+          const items = data.items || data.data?.items || [];
+          if (items.length) {
+            renderMovies(items);
+            totalPages = data.pagination?.totalPages || data.totalPages || 1;
+            renderPagination();
+          } else {
+            document.getElementById('movies').innerHTML = '<div>Không tìm thấy phim nào.</div>';
+            document.getElementById('pagination').innerHTML = '';
+          }
+        })
+        .catch(() => {
+          showLoading(false);
+          document.getElementById('movies').innerHTML = '<div>Lỗi tải phim.</div>';
+          document.getElementById('pagination').innerHTML = '';
+        });
+    }
+
+    function goToPage(page) {
+      fetchMovies(page);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function searchMovies() {
+      currentKeyword = document.getElementById('searchInput').value.trim();
+      fetchMovies(1);
+    }
+
+    function goHome() {
+      currentKeyword = "";
+      document.getElementById('searchInput').value = "";
+      fetchMovies(1);
+    }
+
+    function showMovieDetail(slug) {
+      showLoading(true);
+      fetch(`https://phimapi.com/phim/${slug}`)
+        .then(res => res.json())
+        .then(data => {
+          showLoading(false);
+          const movie = data.movie;
+          const episodes = data.episodes?.[0]?.server_data || [];
+          document.getElementById('movies').innerHTML = `
+            <div style="display:flex;flex-wrap:wrap;gap:24px;">
+              <img src="${getImage(movie.poster_url)}" style="width:220px;border-radius:12px;box-shadow:0 2px 8px #0078d733;">
+              <div style="flex:1;min-width:220px;">
+                <h2 style="color:#0078D7;">${movie.name}</h2>
+                <div><b>Tên gốc:</b> ${movie.origin_name}</div>
+                <div><b>Năm:</b> ${movie.year}</div>
+                <div><b>Thể loại:</b> ${movie.category.map(c => c.name).join(', ')}</div>
+                <div><b>Quốc gia:</b> ${movie.country.map(c => c.name).join(', ')}</div>
+                <div style="margin:10px 0;"><b>Mô tả:</b> ${movie.content}</div>
+                <div style="margin:10px 0;">
+                  <b>Danh sách tập:</b>
+                  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">
+                    ${
+                      episodes.length
+                        ? episodes.map(ep => `<button onclick="playEpisode('${ep.link_embed}')" style="padding:7px 14px;background:#0078D7;color:#fff;border:none;border-radius:6px;cursor:pointer;">${ep.name}</button>`).join('')
+                        : '<span style="color:red;">Phim chưa có tập hoặc chưa hỗ trợ xem trực tiếp.</span>'
+                    }
+                  </div>
+                </div>
+                <button onclick="fetchMovies(currentPage)" style="margin-top:18px;padding:8px 18px;background:#eaf6ff;color:#0078D7;border:none;border-radius:6px;cursor:pointer;">⬅ Quay lại</button>
+              </div>
+            </div>
+            <div id="player" style="margin-top:30px;"></div>
+          `;
+          document.getElementById('pagination').innerHTML = '';
+        })
+        .catch(() => {
+          showLoading(false);
+          document.getElementById('movies').innerHTML = '<div>Lỗi tải chi tiết phim.</div>';
+        });
+    }
+
+    function playEpisode(link) {
+      document.getElementById('player').innerHTML = `
+        <iframe src="${link}" width="100%" height="480" allowfullscreen style="border-radius:12px;border:none;box-shadow:0 2px 8px #0078d733;"></iframe>
+      `;
+      window.scrollTo({ top: document.getElementById('player').offsetTop - 80, behavior: 'smooth' });
+    }
+
+    // Tải phim mới khi vào trang
+    fetchMovies(1);
+
+    // Enter để tìm kiếm
+    document.getElementById('searchInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') searchMovies();
+    });
+  </script>
+</body>
+</html>
