@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Phim- DÀNH CHO EM</title>
+  <title> Phim- DÀNH CHO EM </title>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1308975680862282"
      crossorigin="anonymous"></script>
   <style>
@@ -141,6 +141,80 @@
       .search-bar input { width: 98vw; }
       .movies-grid { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
     }
+    .movie-detail-card {
+      display: flex;
+      flex-direction: column;
+      background: #f7fafd;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px rgba(0, 120, 215, 0.12);
+      overflow: hidden;
+      margin-bottom: 36px;
+    }
+    .movie-detail-thumb {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      border-bottom: 2px solid #eaf6ff;
+    }
+    .movie-detail-info {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .movie-detail-info h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #0078D7;
+      margin: 0;
+    }
+    .movie-detail-info div {
+      font-size: 1.1rem;
+      color: #333;
+    }
+    .movie-detail-desc {
+      margin: 16px 0;
+      padding: 12px;
+      background: #eaf6ff;
+      border-radius: 10px;
+      line-height: 1.5;
+    }
+    .episode-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .episode-btn {
+      padding: 10px 18px;
+      background: linear-gradient(90deg, #0078D7 60%, #74ebd5 100%);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px #0078d722;
+    }
+    .episode-btn:hover {
+      background: linear-gradient(90deg, #005a9e 60%, #74ebd5 100%);
+    }
+    .back-btn {
+      padding: 10px 22px;
+      background: #eaf6ff;
+      color: #0078D7;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px #0078d722;
+    }
+    .back-btn:hover {
+      background: #0078D7;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -153,17 +227,6 @@
       <button onclick="goHome()" style="background:#eaf6ff;color:#0078D7;">🏠 Trang chủ</button>
       <input type="text" id="searchInput" placeholder="Tìm kiếm phim...">
       <button onclick="searchMovies()">Tìm kiếm</button>
-    </div>
-    <!-- Quảng cáo banner dưới header -->
-    <div style="width:100%;text-align:center;margin:24px 0;">
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-1308975680862282"
-           data-ad-slot="1234567890"
-           data-ad-format="auto"></ins>
-      <script>
-           (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
     </div>
     <div id="movies" class="movies-grid"></div>
     <div id="pagination" class="pagination"></div>
@@ -266,29 +329,29 @@
           const movie = data.movie;
           const episodes = data.episodes?.[0]?.server_data || [];
           document.getElementById('movies').innerHTML = `
-            <div style="display:flex;flex-wrap:wrap;gap:24px;">
-              <img src="${getImage(movie.poster_url)}" style="width:220px;border-radius:12px;box-shadow:0 2px 8px #0078d733;">
-              <div style="flex:1;min-width:220px;">
-                <h2 style="color:#0078D7;">${movie.name}</h2>
+            <div class="movie-detail-card">
+              <img class="movie-detail-thumb" src="${getImage(movie.poster_url)}" alt="${movie.name}">
+              <div class="movie-detail-info">
+                <h2>${movie.name}</h2>
                 <div><b>Tên gốc:</b> ${movie.origin_name}</div>
                 <div><b>Năm:</b> ${movie.year}</div>
                 <div><b>Thể loại:</b> ${movie.category.map(c => c.name).join(', ')}</div>
                 <div><b>Quốc gia:</b> ${movie.country.map(c => c.name).join(', ')}</div>
-                <div style="margin:10px 0;"><b>Mô tả:</b> ${movie.content}</div>
-                <div style="margin:10px 0;">
+                <div class="movie-detail-desc"><b>Mô tả:</b> ${movie.content}</div>
+                <div>
                   <b>Danh sách tập:</b>
-                  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;">
+                  <div class="episode-list">
                     ${
                       episodes.length
-                        ? episodes.map(ep => `<button onclick="playEpisode('${ep.link_embed}')" style="padding:7px 14px;background:#0078D7;color:#fff;border:none;border-radius:6px;cursor:pointer;">${ep.name}</button>`).join('')
-                        : '<span style="color:red;">Phim chưa có tập hoặc chưa hỗ trợ xem trực tiếp.</span>'
+                        ? episodes.map(ep => `<button onclick="playEpisode('${ep.link_embed}')" class="episode-btn">${ep.name}</button>`).join('')
+                        : '<span style="color:red;font-size:1.1rem;">Phim chưa có tập hoặc chưa hỗ trợ xem trực tiếp.</span>'
                     }
                   </div>
                 </div>
-                <button onclick="fetchMovies(currentPage)" style="margin-top:18px;padding:8px 18px;background:#eaf6ff;color:#0078D7;border:none;border-radius:6px;cursor:pointer;">⬅ Quay lại</button>
+                <button onclick="fetchMovies(currentPage)" class="back-btn">⬅ Quay lại</button>
               </div>
             </div>
-            <div id="player" style="margin-top:30px;"></div>
+            <div id="player" style="margin-top:24px;"></div>
           `;
           document.getElementById('pagination').innerHTML = '';
         })
@@ -300,7 +363,9 @@
 
     function playEpisode(link) {
       document.getElementById('player').innerHTML = `
-        <iframe src="${link}" width="100%" height="480" allowfullscreen style="border-radius:12px;border:none;box-shadow:0 2px 8px #0078d733;"></iframe>
+        <div style="width:100%;max-width:900px;margin:0 auto;">
+          <iframe src="${link}" width="100%" height="480" allowfullscreen style="border-radius:14px;border:none;box-shadow:0 2px 12px #0078d733;"></iframe>
+        </div>
       `;
       window.scrollTo({ top: document.getElementById('player').offsetTop - 80, behavior: 'smooth' });
     }
@@ -314,5 +379,4 @@
     });
   </script>
 </body>
-
 </html>
